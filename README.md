@@ -1,73 +1,204 @@
-# Getting Started with Create React App
+# User Authentication App with React
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Welcome to the User Authentication App with React tutorial! This project provides a simple authentication system where users can sign up or log in to access the main screen. The project is built using React and demonstrates the fundamentals of creating a user authentication system.
 
-## Available Scripts
+## Project Overview
 
-In the project directory, you can run:
+The project includes the following components:
 
-### `npm start`
+### App.js
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+```jsx
+import React from "react";
+import SignUpForm from "./Components/SignUpForm";
+import LogIn from "./Components/LogIn";
+import { Route, Routes } from "react-router-dom";
+import './App.css';
+import HomePage from "./Components/HomePage";
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+export default function App() {
+  return (
+    <div>
+      <Routes>
+        <Route path="/" element={<SignUpForm />} />
+        <Route path="/login" element={<LogIn />} />
+        <Route path="/HomePage" element={<HomePage />} />
+      </Routes>
+    </div>
+  );
+}
+```
 
-### `npm test`
+### SignUpForm.js
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```jsx
+import React, { useState } from "react";
+import style from "./SignUpForm.module.css";
+import { Link, useNavigate } from "react-router-dom";
 
-### `npm run build`
+export default function SignUpForm() {
+  const [data, setData] = useState({
+    user: "",
+    pass: "",
+    num: "",
+    mail: ""
+  });
+  const nav = useNavigate();
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+  function hanldeInput(e) {
+    e.preventDefault();
+    if (localStorage.getItem(`${data.mail}`) === null) {
+      localStorage.setItem(`${data.mail}`, JSON.stringify(data));
+      alert(`Details Saved Successfully!!`);
+      nav("/HomePage");
+    } else {
+      alert("A User With This Email Already Exists. Please Log In");
+    }
+  }
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+  return (
+    <div className={style.Parent}>
+      {/* ... (form structure) ... */}
+      <form onSubmit={hanldeInput}>
+        {/* ... (form fields) ... */}
+        <button>SignUp</button>
+        <h3 className={style.extra}>
+          Already a user :{" "}
+          <Link to="/login" style={{ color: "white" }}>
+            Log In
+          </Link>
+        </h3>
+      </form>
+    </div>
+  );
+}
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### LogIn.js
 
-### `npm run eject`
+```jsx
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import sty from "./LogIn.module.css";
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+export default function LogIn() {
+  const [data, setData] = useState({
+    mail: "",
+    pass: "",
+  });
+  const navi = useNavigate();
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+  function hanldeOutput(e) {
+    e.preventDefault();
+    if (localStorage.getItem(`${data.mail}`) === null) {
+      alert(`Email is not valid!!
+        Please check your credentials
+        or
+        Please Sign Up!!`);
+    } else {
+      let obj = JSON.parse(localStorage.getItem(`${data.mail}`));
+      if (data.mail === obj.mail && data.pass === obj.pass) {
+        alert(`welcome ${obj.user}!!`);
+        navi("/HomePage");
+      } else {
+        alert("Email or Password is not valid");
+      }
+    }
+  }
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+  return (
+    <div className={sty.Par}>
+      {/* ... (form structure) ... */}
+      <form onSubmit={hanldeOutput}>
+        {/* ... (form fields) ... */}
+        <button className={sty.btn}>Log In</button>
+        <h3 className={sty.ex}>
+          New user :{" "}
+          <Link to="/" style={{ color: "white" }}>
+            Sign Up
+          </Link>
+        </h3>
+      </form>
+    </div>
+  );
+}
+```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### HomePage.js
 
-## Learn More
+```jsx
+import React from "react";
+import sty from "./HomePage.module.css";
+import { Link } from "react-router-dom";
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+export default function HomePage() {
+  return (
+    <div>
+      <nav className={sty.par}>
+        {/* ... (navigation structure) ... */}
+        <ul className={sty.Nav_Container}>
+          {/* ... (navigation links) ... */}
+          <Link to="/login">
+            <li className={sty.Nav_items}>
+              <i class="fa-solid fa-address-card" />
+              <div className={sty.nav_names}>Sign Out</div>
+            </li>
+          </Link>
+        </ul>
+      </nav>
+      <h1 className={sty.content}>This Is Home Page !!</h1>
+    </div>
+  );
+}
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Features
 
-### Code Splitting
+- **User Sign-Up:** Users can sign up by providing a unique username, password, phone number, and email address.
+- **User Log-In:** Existing users can log in with their email and password.
+- **Redirect to Main Screen:** Upon successful sign-up or log-in, users are redirected to the main screen (HomePage).
+- **Email Validation:** Checks if the provided email is unique; a user with the same email cannot sign up again.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## How to Run
 
-### Analyzing the Bundle Size
+1. Clone the repository.
+2. Navigate to the project directory.
+3. Run the following commands:
+   ```bash
+   npm install
+   npm start
+   ```
+4. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## Usage
 
-### Making a Progressive Web App
+1. Visit the application at [http://localhost:3000](http://localhost:3000).
+2. Sign up with a unique username, password, phone number, and email.
+3. Log in using your email and password.
+4. Explore the main screen (HomePage) with navigation options.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+## Important Notes
 
-### Advanced Configuration
+- Do not directly copy and paste the code. Understand each line and customize it for your project.
+- Feel free to experiment with the code to enhance your learning.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+## Technologies Used
 
-### Deployment
+- React
+- React Router DOM
+- HTML
+- CSS
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+## Contributing
 
-### `npm run build` fails to minify
+Feel free to contribute to the project by submitting pull requests or opening issues. Contributions are welcome!
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
-# User-Authentication-App
-# User-Authentication-App
-# User-Authentication-App
+## License
+
+This project is licensed under the [MIT License](LICENSE).
+
+---
+
+Happy coding! 🚀✨
+
+
