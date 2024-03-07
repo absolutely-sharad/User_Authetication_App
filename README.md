@@ -193,12 +193,6 @@ export default function HomePage() {
 
 Feel free to contribute to the project by submitting pull requests or opening issues. Contributions are welcome!
 
-## License
-
-This project is licensed under the [MIT License](LICENSE).
-
----
-
 Happy coding! 🚀✨
 
 
