@@ -21,7 +21,7 @@ export default function SignUpForm() {
   }
   return (
     <div className={style.Parent}>
-      <h1>SignUp</h1>
+      <h1>SignUp Form</h1>
       <form onSubmit={hanldeInput}>
         <label htmlFor="UserName">Username : </label>
         <input
@@ -54,8 +54,7 @@ export default function SignUpForm() {
         />
         <br />
         <label htmlFor="mail" id="lmail">
-          Email :
-        </label>
+          Email ID :  </label>
         <input
           type="email"
           id="mail"
@@ -63,7 +62,7 @@ export default function SignUpForm() {
           value={data.mail}
           className={style.in}
           onChange={(e) => setData({ ...data, mail: e.target.value })}
-          style={{ width: "150px" }}
+          style={{ width: "250px" }}
         />
         <br />
         <button>SignUp</button>

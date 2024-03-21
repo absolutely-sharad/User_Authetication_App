@@ -5,7 +5,7 @@ export default function HomePage() {
   return (
     <div>
       <nav className={sty.par}>
-        <h1 className={sty.Heading}> TechVenture</h1>
+        <h1 className={sty.Heading}>Engineers Global</h1>
         <ul className={sty.Nav_Container}>
           <Link to="/">
             <li className={sty.Nav_items}>

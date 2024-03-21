@@ -31,8 +31,7 @@ Please Sign Up!!`);
       <form onSubmit={hanldeOutput}>
         <br />
         <label htmlFor="mail" id="lmail" className={sty.lbl}>
-          Email :
-        </label>
+          Email ID  : </label>
         <input
           type="email"
           id="mail"
@@ -40,7 +39,7 @@ Please Sign Up!!`);
           value={data.mail}
           className={sty.in}
           onChange={(e) => setData({ ...data, mail: e.target.value })}
-          style={{ width: "150px" }}
+          style={{ width: "259px" , margin: "10px" }}
         />
         <br />
         <label htmlFor="Pass" className={sty.lbl}>
